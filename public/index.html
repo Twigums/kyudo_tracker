@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    <!-- buttons -->
+    <button id="clearMarkers">Clear Markers</button>
+    <button id="endSet">End Set</button>
+    <button id="showAll">Show All</button>
+    <button id="hideAll">Hide All</button>
+
+    <!-- add mato image -->
+    <div style="position: relative;">
+        <img id="clickArea" src="/images/mato.png" style="width: 100%; height: auto;">
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <script>
+    $(document).ready(function(){
+        var setNumber = 1; // Tracks the set number
+        var allCoordinates = []; // Array to store coordinates
+
+        // Event listener for click on the image area
+        $("#clickArea").click(function(event){
+            var imgPos = $(this).offset();
+            var x = event.pageX - imgPos.left; // X-coordinate of click
+            var y = event.pageY - imgPos.top; // Y-coordinate of click
+
+            // Create a new div at the click location
+            var clickMarker = $('<div class="clickMarker currentSet marker"></div>'); // we want clickMarker, currentSet, and marker for general, clearing, and showing all purposes respectively
+
+            clickMarker.css({
+                left: x,
+                top: y
+
+            });
+
+            $(this).parent().append(clickMarker);
+            console.log("Set Number: " + setNumber);
+
+            $.ajax({
+                url: "/click",
+                type: "POST",
+                data: {
+                    x: x,
+                    y: y
+
+                },
+                success: function(){
+                    console.log("Click event sent to server");
+
+                }
+
+            });
+            allCoordinates.push({x: x, y: y}); // Store the coordinates
+
+        });
+
+        // Add click event listener to the Clear Markers button
+        $("#clearMarkers").click(function() {
+            $(".currentSet").remove();
+
+            // Clear the coordinates array
+            allCoordinates = [];
+
+        });
+
+        // Add click event listener to the End Set button
+        $("#endSet").click(function() {
+            if ($(".currentSet").length > 0) {
+                // Change the class of the markers from 'currentSet' to 'previousSets'
+                $(".currentSet").removeClass('currentSet').addClass('previousSets').hide();
+
+                // Send the coordinates to the server to save them
+                $.ajax({
+                    url: "/saveCoordinates",
+                    type: "POST",
+                    data: {
+                        coordinates: allCoordinates,
+                        setNumber: setNumber,
+
+                    },
+                    success: function(){
+                        console.log("Coordinates sent to server");
+
+                    }
+
+                });
+
+                // Clear the coordinates array
+                allCoordinates = [];
+
+                // Increment the set number
+                setNumber++;
+
+            }
+
+        });
+
+        // And in your "Show All" button click handler:
+        $("#showAll").click(function() {
+            // Show all markers
+            $(".marker").show(); // Use the 'marker' class to show the markers
+
+        });
+
+        // And in your "Hide All" button click handler:
+        $("#hideAll").click(function() {
+            // Show all markers
+            $(".marker").hide(); // Use the 'marker' class to show the markers
+
+        });
+
+    });
+    </script>
+
+    <!-- style of clickMarker (the hits) -->
+    <style>
+    .clickMarker {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: red;
+    }
+    </style>
+
+</body>
+</html>
