@@ -1,3 +1,15 @@
 # kyudo_tracker
 
-A plain website to track where your arrows went. The data is automatically saved every time you click end set, and at the end of the session, the data can be parsed using the functions in the python_functions directory.
+A plain website to track where your arrows went. The data is automatically saved every time you click end set, and at the end of the session, the data can be parsed using the functions in the python_scripts directory.
+
+On the website:
+
+- clear markers: clears the markers from the set
+- end set: saves the current markers into a text file and hides the shown markers
+- show all: shows all markers (hits) from all sets
+- hide all: hides all markers (hits) from all sets
+
+Python script:
+
+- currently, I only have a script to show where the arrows landed in relation to the mato using `matplotlib`
+- further analysis can be done with this data (the mean distance from the center, hit rate, or advanced diagnoses of shooting form/position, etc.; these need to be consulted with other kyudo archers)
