@@ -27,7 +27,7 @@
             var y = event.pageY - imgPos.top; // Y-coordinate of click
 
             // Create a new div at the click location
-            var clickMarker = $('<div class="clickMarker currentSet marker"></div>'); // we want clickMarker, currentSet, and marker for general, clearing, and showing all purposes respectively
+            var clickMarker = $("<div class="clickMarker currentSet marker"></div>"); // we want clickMarker, currentSet, and marker for general, clearing, and showing all purposes respectively
 
             clickMarker.css({
                 left: x,
@@ -68,8 +68,8 @@
         // Add click event listener to the End Set button
         $("#endSet").click(function() {
             if ($(".currentSet").length > 0) {
-                // Change the class of the markers from 'currentSet' to 'previousSets'
-                $(".currentSet").removeClass('currentSet').addClass('previousSets').hide();
+                // Change the class of the markers from "currentSet" to "previousSets"
+                $(".currentSet").removeClass("currentSet").addClass("previousSets").hide();
 
                 // Send the coordinates to the server to save them
                 $.ajax({
@@ -100,14 +100,14 @@
         // And in your "Show All" button click handler:
         $("#showAll").click(function() {
             // Show all markers
-            $(".marker").show(); // Use the 'marker' class to show the markers
+            $(".marker").show(); // Use the "marker" class to show the markers
 
         });
 
         // And in your "Hide All" button click handler:
         $("#hideAll").click(function() {
             // Show all markers
-            $(".marker").hide(); // Use the 'marker' class to show the markers
+            $(".marker").hide(); // Use the "marker" class to show the markers
 
         });
 

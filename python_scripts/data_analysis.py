@@ -1,7 +1,7 @@
 from data_functions import *
 
 # which file we want to use
-INPUT_FILENAME = "../coordinates_2024-1-22_13-47-16"
+INPUT_FILENAME = "../coordinates_2024-1-23_17-0-12"
 
 # sample mato (target) data in the image
 coord_center = [903, 542]
