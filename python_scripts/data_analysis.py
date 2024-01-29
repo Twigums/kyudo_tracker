@@ -1,7 +1,7 @@
 from data_functions import *
 
 # which file we want to use
-INPUT_FILENAME = "../coordinates_2024-1-23_17-0-12"
+INPUT_FILENAME = "../test"
 
 # sample mato (target) data in the image
 coord_center = [903, 542]
@@ -21,4 +21,5 @@ real_center = [coord * normalization_factor for coord in coord_center]
 # applying functions
 formatted_data = format_data(INPUT_FILENAME)
 data_dict = make_dict(formatted_data, normalization_factor)
+plot_ma_distance(INPUT_FILENAME, data_dict, real_center, 10)
 plot_data(INPUT_FILENAME, data_dict, real_center, real_radius) # should automatically save the plot as "INPUT_FILENAME".png

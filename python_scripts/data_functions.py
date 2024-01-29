@@ -43,10 +43,10 @@ def calculate_distance(coord1, coord2):
 
 # This function plots the data points and a circle on a 2D grid
 def plot_data(input_filename, dictionary, center, radius):
-    fig, ax = plt.subplots()  # Create a figure and a set of subplots
+    fig, ax = plt.subplots() # Create a figure and a set of subplots
 
+    # plot each set as a different opacity on the same plot
     for i in range(1, len(dictionary) + 1):
-
         coordinates = dictionary[i]
 
         x_values = [coord[0] for coord in coordinates]
@@ -74,3 +74,37 @@ def plot_data(input_filename, dictionary, center, radius):
 
     # Save the plot as a PNG file
     plt.savefig(f"{input_filename}.png")
+
+def plot_ma_distance(input_filename, dictionary, center, conv_width):
+    fig, ax = plt.subplots()  # Create a figure and a set of subplots
+    distances = [] # to store distances for each arrow
+
+    # stores the distances for each arrow in all sets
+    for i in range(1, len(dictionary) + 1):
+        coordinates = dictionary[i]
+
+        for coordinate in coordinates:
+            distances.append(calculate_distance(coordinate, center))
+
+    # list of arrows as a list (1, 2, ..., n)
+    arrow_vec = [val for val in range(1, len(distances) + 1)]
+
+    # list of arrows for moving average (same length list but remove conv_width on upper bound)
+    ma_arrow_vec = [val for val in range(1, len(distances) + 1 - conv_width + 1)]
+
+    # get MA using numpy's cumsum and average calculation
+    cumsum_vec = np.cumsum(np.insert(distances, 0, 0))
+    ma_vec = (cumsum_vec[conv_width: ] - cumsum_vec[: -conv_width]) / conv_width
+
+    # plots distances and MA
+    ax.scatter(arrow_vec, distances, color = "black")
+    ax.plot(ma_arrow_vec, ma_vec, color = "red", marker='.', linestyle=':')
+
+    # plot details
+    ax.set_xlabel("Arrow No.")
+    ax.set_ylabel("Distance from Center [cm]")
+    ax.set_title("Distance from Center for Increasing Arrow Count")
+    ax.grid(False)
+
+    # save plot
+    plt.savefig(f"{input_filename}-ma.png")
