@@ -8,15 +8,21 @@
     <button id="showAll">Show All</button>
     <button id="hideAll">Hide All</button>
 
+    </br>
+
+    <button id="downloadPlot">Download Plot</button>
+    <button id="downloadMA">Download MA Plot</button>
+
     <!-- add mato image -->
     <div style="position: relative;">
         <img id="clickArea" src="/images/mato.png" style="width: 100%; height: auto;">
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- always check most recent version: currently 3.7.1 -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         var setNumber = 1; // Tracks the set number
         var allCoordinates = []; // Array to store coordinates
 
@@ -46,7 +52,7 @@
                     y: y
 
                 },
-                success: function(){
+                success: function () {
                     console.log("Click event sent to server");
 
                 }
@@ -57,7 +63,7 @@
         });
 
         // Add click event listener to the Clear Markers button
-        $("#clearMarkers").click(function() {
+        $("#clearMarkers").click(function () {
             $(".currentSet").remove();
 
             // Clear the coordinates array
@@ -66,7 +72,7 @@
         });
 
         // Add click event listener to the End Set button
-        $("#endSet").click(function() {
+        $("#endSet").click(function () {
             if ($(".currentSet").length > 0) {
                 // Change the class of the markers from "currentSet" to "previousSets"
                 $(".currentSet").removeClass("currentSet").addClass("previousSets").hide();
@@ -80,7 +86,7 @@
                         setNumber: setNumber,
 
                     },
-                    success: function(){
+                    success: function () {
                         console.log("Coordinates sent to server");
 
                     }
@@ -97,17 +103,33 @@
 
         });
 
-        // And in your "Show All" button click handler:
-        $("#showAll").click(function() {
+        // show all button shows all markers (with marker div)
+        $("#showAll").click(function () {
             // Show all markers
             $(".marker").show(); // Use the "marker" class to show the markers
 
         });
 
-        // And in your "Hide All" button click handler:
-        $("#hideAll").click(function() {
+        // hide all button hides all markers (with marker div)
+        $("#hideAll").click(function () {
             // Show all markers
             $(".marker").hide(); // Use the "marker" class to show the markers
+
+        });
+
+        // downloads plot on client side
+        $("#downloadPlot").click(function () {
+
+            // call server to download plot
+            window.open("/generate_marker_plot", "_blank");
+
+        });
+
+        // downloads plot on client side
+        $("#downloadMA").click(function () {
+
+            // call server to download plot
+            window.open("/generate_ma_plot", "_blank");
 
         });
 

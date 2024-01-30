@@ -1,7 +1,5 @@
+import sys
 from data_functions import *
-
-# which file we want to use
-INPUT_FILENAME = "../test"
 
 # sample mato (target) data in the image
 coord_center = [903, 542]
@@ -18,8 +16,19 @@ normalization_factor = real_radius / pixel_radius
 # apply the normalization to the center
 real_center = [coord * normalization_factor for coord in coord_center]
 
-# applying functions
-formatted_data = format_data(INPUT_FILENAME)
-data_dict = make_dict(formatted_data, normalization_factor)
-plot_ma_distance(INPUT_FILENAME, data_dict, real_center, 10)
-plot_data(INPUT_FILENAME, data_dict, real_center, real_radius) # should automatically save the plot as "INPUT_FILENAME".png
+# calls all functions to generate marker plot and formats to send file to client
+def generate_marker_plot(input_filename):
+    formatted_data = format_data(input_filename)
+    data_dict = make_dict(formatted_data, normalization_factor)
+    plot_data(input_filename, data_dict, real_center, real_radius)
+
+
+# calls all functions to generate MA plot and formats to send file to client
+def generate_ma_plot(input_filename):
+    formatted_data = format_data(input_filename)
+    data_dict = make_dict(formatted_data, normalization_factor)
+    plot_ma_distance(input_filename, data_dict, real_center, 10)
+
+if __name__ == "__main__":
+    args = sys.argv
+    globals()[args[1]](*args[2:])

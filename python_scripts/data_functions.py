@@ -4,7 +4,7 @@ from matplotlib.patches import Circle
 
 # This function formats the data from a text file into a list of lists
 def format_data(input_filename):
-    with open(f"{input_filename}.txt", "r") as file:
+    with open(f"./data/txt/{input_filename}.txt", "r") as file:
         data = file.read().split("\n")
 
     formatted_data = []
@@ -73,7 +73,7 @@ def plot_data(input_filename, dictionary, center, radius):
     ax.set_aspect("equal", "box") # we want equal aspect ratio to ensure the circle shows up as a circle
 
     # Save the plot as a PNG file
-    plt.savefig(f"{input_filename}.png")
+    plt.savefig(f"./data/images/{input_filename}.png")
 
 def plot_ma_distance(input_filename, dictionary, center, conv_width):
     fig, ax = plt.subplots()  # Create a figure and a set of subplots
@@ -107,4 +107,4 @@ def plot_ma_distance(input_filename, dictionary, center, conv_width):
     ax.grid(False)
 
     # save plot
-    plt.savefig(f"{input_filename}-ma.png")
+    plt.savefig(f"./data/images/{input_filename}-ma.png")

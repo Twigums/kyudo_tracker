@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
+const { exec } = require("child_process")
 
 const app = express();
 const port = 3000;
@@ -9,6 +10,7 @@ const port = 3000;
 // Get the current date and time
 const date = new Date();
 const dateString = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}_${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`;
+const filename = `coordinates_${dateString}`;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -38,10 +40,10 @@ app.post("/saveCoordinates", (req, res) => {
   const data = coordinates.map(coordinate => `${setNumber}, ${coordinate.x}, ${coordinate.y}\n`).join("");
 
   // Use the date and time as the filename
-  const filename = `coordinates_${dateString}.txt`;
+  const txt_filepath = path.join(__dirname, "data", "txt", `${filename}.txt`);
 
   // Write the data to a file
-  fs.appendFile(filename, data, (err) => {
+  fs.appendFile(txt_filepath, data, (err) => {
     if (err) {
       console.log(err);
       res.sendStatus(500);
@@ -55,6 +57,43 @@ app.post("/saveCoordinates", (req, res) => {
   });
 
 });
+
+app.get("/generate_marker_plot", (req, res) => {
+
+  // Execute the Python script
+  exec(`python ./python_scripts/data_analysis.py generate_marker_plot ${filename}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing Python script: ${error.message}`);
+      return res.status(500).send("Internal Server Error");
+
+    }
+
+    // Send the plot file as a response
+    res.download(`./data/images/${filename}.png`);
+    console.log("Plot downloaded");
+
+  });
+
+});
+
+app.get("/generate_ma_plot", (req, res) => {
+
+  // Execute the Python script
+  exec(`python ./python_scripts/data_analysis.py generate_ma_plot ${filename}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing Python script: ${error.message}`);
+      return res.status(500).send("Internal Server Error");
+
+    }
+
+    // Send the plot file as a response
+    res.download(`./data/images/${filename}-ma.png`);
+    console.log("Plot downloaded");
+
+  });
+
+});
+
 app.listen(port, () => {
   console.log(`Website is running at http://localhost:${port}`);
 
