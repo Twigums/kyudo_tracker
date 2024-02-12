@@ -23,6 +23,11 @@ app.get("/", function(req, res) {
 
 });
 
+app.get("/client.js", function(req, res) {
+  res.sendFile(path.join(__dirname, "public", "client_side.js"));
+
+});
+
 // log click events
 app.post("/click", (req, res) => {
   console.log(`Click at coordinates (${req.body.x}, ${req.body.y})`);
