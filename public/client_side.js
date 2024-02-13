@@ -17,6 +17,7 @@ arrows.forEach(arrow => {
 
     // Event listener for when dragging ends
     arrow.addEventListener('dragend', function() {
+
         // reset
         offsetX = offsetY = 0;
 
@@ -48,100 +49,72 @@ document.addEventListener("drop", function(event) {
 
 });
 
+function reset_pos() {
+    let arrows = ["arrow1", "arrow2", "arrow3", "arrow4"];
+
+    for (let i = 0; i < arrows.length; i++) {
+        document.getElementById(arrows[i]).style.top = "50px";
+        document.getElementById(arrows[i]).style.left = 50 * (i + 1) + "px";
+
+    }
+
+}
+
 $(document).ready(function () {
-    var setNumber = 1; // set number
-    var allCoordinates = []; // store coordinates
-
-    // Event listener for click on the image area
-    $("#clickArea").click(function(event){
-        var imgPos = $(this).offset();
-        var x = event.pageX - imgPos.left; // x of click
-        var y = event.pageY - imgPos.top; // y of click
-
-        // Create a new div at the click location
-        var clickMarker = $("<div class='clickMarker currentSet marker'></div>"); // we want clickMarker, currentSet, and marker for general, clearing, and showing all purposes respectively
-
-        clickMarker.css({
-            left: x,
-            top: y
-
-        });
-
-        $(this).parent().append(clickMarker);
-        console.log("Set Number: " + setNumber);
-
-        $.ajax({
-            url: "/click",
-            type: "POST",
-            data: {
-                x: x,
-                y: y
-
-            },
-
-            success: function () {
-                console.log("Click event sent to server");
-
-            }
-
-        });
-
-        allCoordinates.push({x: x, y: y}); // Store coordinates
-
-    });
+    let setNumber = 1;
 
     // Add click event listener to the Clear Markers button
     $("#clearMarkers").click(function () {
         $(".currentSet").remove();
-
-        // clear coordinates array
-        allCoordinates = [];
+        reset_pos();
 
     });
 
     // Add click event listener to the End Set button
     $("#endSet").click(function () {
-        if ($(".currentSet").length > 0) {
+        let coords = [];
 
-            // change the class of the markers from "currentSet" to "previousSets"
-            $(".currentSet").removeClass("currentSet").addClass("previousSets").hide();
+        ["arrow1", "arrow2", "arrow3", "arrow4"].forEach(i => {
+            const arrow = document.getElementById(i);
+            const arrow_rect = arrow.getBoundingClientRect();
+            const x = arrow_rect.left + arrow_rect.width / 2;
+            const y = arrow_rect.top + arrow_rect.height / 2;
 
-            // send coordinates to server to save them
-            $.ajax({
-                url: "/saveCoordinates",
-                type: "POST",
-                data: {
-                    coordinates: allCoordinates,
-                    setNumber: setNumber,
+            coords.push({x, y});
 
-                },
+        });
 
-                success: function () {
-                    console.log("Coordinates sent to server");
+        $.ajax({
+            url: "/saveCoordinates",
+            type: "POST",
+            data: {
+                coordinates: coords,
+                setNumber: setNumber,
 
-                }
+            },
 
-            });
+            success: function () {
+                console.log("Coordinates sent to server.");
 
-            // clear coordinates array
-            allCoordinates = [];
+            }
 
-            // increment set number
-                setNumber++;
+        });
 
-        }
+        reset_pos();
+
+        setNumber++;
 
     });
 
     // show all button shows all markers (with marker div)
     $("#showAll").click(function () {
-        $(".marker").show();
+        $(".arrow").show();
 
     });
 
     // hide all button hides all markers (with marker div)
     $("#hideAll").click(function () {
-        $(".marker").hide();
+        $(".arrow").hide();
 
     });
 

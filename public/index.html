@@ -8,7 +8,7 @@
     <button id = "showAll">Show All</button>
     <button id = "hideAll">Hide All</button>
 
-    </br>
+    <br>
 
     <button id = "downloadPlot">Download Plot</button>
     <button id = "downloadMA">Download MA Plot</button>
@@ -18,26 +18,15 @@
         <img id = "clickArea" src = "/images/mato.png" style = "width: 100%; height: auto;">
 
         <!-- add draggable objects -->
-        <div id = "arrow1" class = "arrow" draggable = "true"> 1 </div>
-        <div id = "arrow2" class = "arrow" draggable = "true"> 2 </div>
-        <div id = "arrow3" class = "arrow" draggable = "true"> 3 </div>
-        <div id = "arrow4" class = "arrow" draggable = "true"> 4 </div>
+        <div id = "arrow1" class = "arrow" draggable = "true" style = "top: 50px; left: 50px;"> 1 </div>
+        <div id = "arrow2" class = "arrow" draggable = "true" style = "top: 50px; left: 100px;"> 2 </div>
+        <div id = "arrow3" class = "arrow" draggable = "true" style = "top: 50px; left: 150px;"> 3 </div>
+        <div id = "arrow4" class = "arrow" draggable = "true" style = "top: 50px; left: 200px;"> 4 </div>
     </div>
 
     <!-- always check most recent version: currently 3.7.1 -->
     <script src = "https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src = "/client.js"> </script>
-
-    <!-- style of clickMarker (the hits) -->
-    <style>
-        .clickMarker {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: red;
-        }
-    </style>
+    <script src = "/client_side.js"> </script>
 
     <!-- style of arrows -->
     <style>
