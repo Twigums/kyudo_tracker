@@ -12,7 +12,8 @@ def format_data(input_filename):
     # use mapping to format data into a list and append
     for line in data:
         if line != "":
-            formatted_data.append(list(map(int, line.split(", "))))
+            line_data = line.split(", ")
+            formatted_data.append(line_data)
 
     return formatted_data
 
@@ -22,12 +23,17 @@ def make_dict(data, normalization_factor):
 
     # we normalize the data points to change pixel values into centimeters
     for point in data:
-        set_value, x, y = point
+        set_value, x, y, arrow_idx = point
+        set_value = int(set_value)
+        x = int(x)
+        y = int(y)
+        arrow_idx = int(arrow_idx[-1]) - 1
 
         if set_value not in data_dict:
-            data_dict[set_value] = [[x * normalization_factor, y * normalization_factor]]
+            data_dict[set_value] = [[x * normalization_factor, y * normalization_factor, arrow_idx]]
+
         else:
-            data_dict[set_value].append([x * normalization_factor, y * normalization_factor])
+            data_dict[set_value].append([x * normalization_factor, y * normalization_factor, arrow_idx])
 
     return data_dict
 
@@ -44,6 +50,7 @@ def calculate_distance(coord1, coord2):
 # This function plots the data points and a circle on a 2D grid
 def plot_data(input_filename, dictionary, center, radius):
     fig, ax = plt.subplots() # Create a figure and a set of subplots
+    colors = ["#648fff", "#785ef0", "#dc267f", "#fe6100"] # color blind friendly colors from ibm design
 
     # plot each set as a different opacity on the same plot
     for i in range(1, len(dictionary) + 1):
@@ -51,12 +58,17 @@ def plot_data(input_filename, dictionary, center, radius):
 
         x_values = [coord[0] for coord in coordinates]
         y_values = [coord[1] for coord in coordinates]
+        color_idx = [coord[2] for coord in coordinates]
 
         # opacity is scaled for how many keys in the dictionary (how many sets)
         opacity = i / len(dictionary)
 
         # Plot the points with the calculated opacity
-        ax.scatter(x_values, y_values, alpha = opacity)
+        for j in range(len(x_values)):
+            x = x_values[j]
+            y = y_values[j]
+            color = colors[color_idx[j]]
+            ax.scatter(x, y, alpha = opacity, color = color)
 
     # Create a circle with the given center and radius
     circle = Circle(center, radius, fill=True, alpha = 0.2)
@@ -71,6 +83,7 @@ def plot_data(input_filename, dictionary, center, radius):
     ax.xaxis.set_ticks(np.arange(0, x_center * 2, 10))
     ax.yaxis.set_ticks(np.arange(0, y_center * 2, 10))
     ax.set_aspect("equal", "box") # we want equal aspect ratio to ensure the circle shows up as a circle
+    ax.invert_yaxis() # due to js coord, we should invert y axis to be consistent
 
     # Save the plot as a PNG file
     plt.savefig(f"./data/images/{input_filename}.png")

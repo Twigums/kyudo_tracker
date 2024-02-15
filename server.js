@@ -42,7 +42,7 @@ app.post("/saveCoordinates", (req, res) => {
 
   // Convert the coordinates array to a CSV string
   // data will be saved in the format of "set number, x, y"
-  const data = coordinates.map(coordinate => `${setNumber}, ${coordinate.x}, ${coordinate.y}\n`).join("");
+  const data = coordinates.map(coordinate => `${setNumber}, ${coordinate.x}, ${coordinate.y}, ${coordinate.i}\n`).join("");
 
   // Use the date and time as the filename
   const txt_filepath = path.join(__dirname, "data", "txt", `${filename}.txt`);

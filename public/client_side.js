@@ -80,7 +80,7 @@ $(document).ready(function () {
             const x = arrow_rect.left + arrow_rect.width / 2;
             const y = arrow_rect.top + arrow_rect.height / 2;
 
-            coords.push({x, y});
+            coords.push({x, y, i});
 
         });
 
