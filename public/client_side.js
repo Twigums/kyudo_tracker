@@ -126,11 +126,19 @@ $(document).ready(function () {
 
     });
 
-    // downloads plot on client side
+    // downloads MA plot on client side
     $("#downloadMA").click(function () {
 
         // call server to download plot
         window.open("/generate_ma_plot", "_blank");
+
+    });
+
+    // downloads KMeans plot on client side
+    $("#downloadKMeans").click(function () {
+
+        // call server to download plot
+        window.open("/generate_kmeans_plot", "_blank");
 
     });
 

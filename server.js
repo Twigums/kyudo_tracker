@@ -15,7 +15,7 @@ const filename = `coordinates_${dateString}`;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Serve static files from the "public" directory
+// Serve static files from "public"
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", function(req, res) {
@@ -65,7 +65,7 @@ app.post("/saveCoordinates", (req, res) => {
 
 app.get("/generate_marker_plot", (req, res) => {
 
-  // Execute the Python script
+  // execute generate_marker_plot()
   exec(`python ./python_scripts/data_analysis.py generate_marker_plot ${filename}`, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error executing Python script: ${error.message}`);
@@ -73,7 +73,7 @@ app.get("/generate_marker_plot", (req, res) => {
 
     }
 
-    // Send the plot file as a response
+    // send plot as response download
     res.download(`./data/images/${filename}.png`);
     console.log("Plot downloaded");
 
@@ -83,7 +83,7 @@ app.get("/generate_marker_plot", (req, res) => {
 
 app.get("/generate_ma_plot", (req, res) => {
 
-  // Execute the Python script
+  // execute generate_ma_plot()
   exec(`python ./python_scripts/data_analysis.py generate_ma_plot ${filename}`, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error executing Python script: ${error.message}`);
@@ -91,8 +91,26 @@ app.get("/generate_ma_plot", (req, res) => {
 
     }
 
-    // Send the plot file as a response
+    // send plot as response download
     res.download(`./data/images/${filename}-ma.png`);
+    console.log("Plot downloaded");
+
+  });
+
+});
+
+app.get("/generate_kmeans_plot", (req, res) => {
+
+  // execute generate_kmeans_plot()
+  exec(`python ./python_scripts/data_analysis.py generate_kmeans_plot ${filename}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing Python script: ${error.message}`);
+      return res.status(500).send("Internal Server Error");
+
+    }
+
+    // send plot as response download
+    res.download(`./data/images/${filename}-kmeans.png`);
     console.log("Plot downloaded");
 
   });
