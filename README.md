@@ -11,5 +11,8 @@ On the website:
 
 Python script:
 
-- currently, I only have a script to show where the arrows landed in relation to the mato using `matplotlib`
-- further analysis can be done with this data (the mean distance from the center, hit rate, or advanced diagnoses of shooting form/position, etc.; these need to be consulted with other kyudo archers)
+all implementations will use colors from ibm design (https://carbondesignsystem.com/data-visualization/color-palettes/)
+
+- `plot_data`: plots where the arrows landed in relation to the target
+- `plot_ma_distance`: plots the moving average of the distance between the arrow to the center of the target
+- `plot_kmeans`: plots result of clustering k-NN with clusters from [1, 4]
