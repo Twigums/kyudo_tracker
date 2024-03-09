@@ -202,7 +202,8 @@ def plot_kmeans(input_filename, dictionary, center, radius):
         ax.xaxis.set_ticks(np.arange(0, x_center * 2, 10))
         ax.yaxis.set_ticks(np.arange(0, y_center * 2, 10))
         ax.set_aspect("equal", "box") # we want equal aspect ratio to ensure the circle shows up as a circle
-        ax.invert_yaxis() # due to js coord, we should invert y axis to be consistent
+
+    axs[0, 0].invert_yaxis() # due to js coord, we should invert y axis to be consistent
 
     # save figure of 4 plots
     plt.savefig(f"./data/images/{input_filename}-kmeans.png")
